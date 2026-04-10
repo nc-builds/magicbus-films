@@ -84,6 +84,7 @@
     height: auto;
     opacity: 0;
     animation: fadeIn 0.8s ease 0.3s forwards;
+    mix-blend-mode: screen;
   }
   .loader-sub {
     font-size: 0.7rem;
@@ -129,10 +130,10 @@
   .nav-logo img {
     height: 40px;
     width: auto;
-    filter: brightness(0) invert(1);
-    transition: filter 0.3s;
+    mix-blend-mode: screen;
+    transition: opacity 0.3s;
   }
-  .nav-logo:hover img { filter: brightness(0) invert(1) sepia(1) saturate(2) hue-rotate(10deg) brightness(1.2); }
+  .nav-logo:hover img { opacity: 0.8; }
   .nav-right { display: flex; align-items: center; gap: 2.5rem; }
   .nav-links { display: flex; gap: 2rem; list-style: none; }
   .nav-links a {
@@ -363,6 +364,7 @@
     position: absolute; inset: 0;
     background-size: cover;
     background-position: center;
+    background-color: var(--dark);
     transition: transform 0.8s var(--ease-out);
   }
   .reel-card:hover .reel-card-thumb { transform: scale(1.05); }
@@ -416,6 +418,46 @@
     color: rgba(255,255,255,0.4);
     z-index: 2;
   }
+  /* Illustrative overlay for cards without video thumbnails */
+  .reel-card-art {
+    position: absolute;
+    inset: 0;
+    background: var(--dark);
+    overflow: hidden;
+  }
+  .reel-card-art::before {
+    content: '';
+    position: absolute;
+    inset: -20%;
+    background:
+      conic-gradient(from 45deg at 30% 40%, rgba(232,213,163,0.06) 0deg, transparent 60deg, transparent 180deg, rgba(232,213,163,0.04) 240deg, transparent 360deg),
+      conic-gradient(from 200deg at 70% 60%, rgba(232,213,163,0.05) 0deg, transparent 90deg, transparent 270deg, rgba(232,213,163,0.03) 360deg);
+    animation: artRotate 20s linear infinite;
+  }
+  @keyframes artRotate { to { transform: rotate(360deg); } }
+  .reel-card-art::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(232,213,163,0.03) 60px, rgba(232,213,163,0.03) 61px),
+      repeating-linear-gradient(0deg, transparent, transparent 60px, rgba(232,213,163,0.03) 60px, rgba(232,213,163,0.03) 61px);
+  }
+  .reel-card-art-icon {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.06;
+    z-index: 1;
+  }
+  .reel-card-art-icon svg {
+    width: 120px; height: 120px;
+    stroke: var(--accent);
+    fill: none;
+    stroke-width: 0.8;
+  }
+  .reel-card:hover .reel-card-art::before { animation-duration: 8s; }
+  .reel-card:hover .reel-card-art-icon { opacity: 0.12; }
   .showreel-progress {
     position: absolute;
     bottom: 2.5rem; left: 50%;
@@ -528,13 +570,27 @@
     padding: 2rem 1.5rem;
   }
   .way-icon {
-    width: 48px; height: 48px;
+    width: 64px; height: 64px;
     margin: 0 auto 1.5rem;
-    opacity: 0.7;
-    transition: opacity 0.3s, transform 0.3s var(--ease-out);
+    position: relative;
   }
-  .way-card:hover .way-icon { opacity: 1; transform: translateY(-4px); }
-  .way-icon svg { width: 100%; height: 100%; stroke: var(--accent); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .way-icon::after {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,213,163,0.06), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .way-card:hover .way-icon::after { opacity: 1; }
+  .way-icon svg {
+    width: 100%; height: 100%;
+    stroke: var(--accent); fill: none;
+    stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round;
+    transition: transform 0.5s var(--ease-out);
+  }
+  .way-card:hover .way-icon svg { transform: scale(1.1); }
   .way-card h3 {
     font-family: var(--serif);
     font-size: 1.15rem;
@@ -859,56 +915,60 @@
           <div class="reel-card-number">01</div>
           <div class="reel-card-content">
             <p class="reel-card-tag">Brand Film</p>
-            <h3 class="reel-card-name">Epson &mdash; Back to School</h3>
+            <h3 class="reel-card-name">Epson Back to School</h3>
           </div>
         </a>
 
-        <a href="https://www.youtube.com/channel/UCMi_U_5IvRSC8R4LsWVVKkA" target="_blank" rel="noopener" class="reel-card">
-          <div class="reel-card-thumb" style="background-image:url('https://img.youtube.com/vi/ZjrmS_73G30/hqdefault.jpg'); background-position: center; filter: hue-rotate(180deg) saturate(0.6);"></div>
+        <a href="https://www.youtube.com/watch?v=7whp09shJ3s" target="_blank" rel="noopener" class="reel-card">
+          <div class="reel-card-thumb" style="background-image:url('https://img.youtube.com/vi/7whp09shJ3s/maxresdefault.jpg')"></div>
           <div class="reel-card-gradient"></div>
           <div class="reel-card-play"></div>
           <div class="reel-card-number">02</div>
           <div class="reel-card-content">
             <p class="reel-card-tag">Healthcare &middot; Campaign</p>
-            <h3 class="reel-card-name">Apollo &mdash; Unmask Cancer</h3>
+            <h3 class="reel-card-name">Apollo Unmask Cancer</h3>
           </div>
         </a>
 
         <a href="https://www.youtube.com/channel/UCMi_U_5IvRSC8R4LsWVVKkA" target="_blank" rel="noopener" class="reel-card">
-          <div class="reel-card-thumb" style="background-color: var(--mid); background-image: linear-gradient(135deg, rgba(232,213,163,0.05), transparent);"></div>
+          <div class="reel-card-art">
+            <div class="reel-card-art-icon">
+              <svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="50"/><path d="M60 10 L60 110"/><path d="M10 60 L110 60"/><circle cx="60" cy="60" r="25"/><path d="M60 35 L60 85"/><path d="M35 60 L85 60"/><circle cx="60" cy="60" r="8" fill="rgba(232,213,163,0.1)"/><path d="M25 25 L95 95" opacity="0.5"/><path d="M95 25 L25 95" opacity="0.5"/></svg>
+            </div>
+          </div>
           <div class="reel-card-gradient"></div>
           <div class="reel-card-play"></div>
           <div class="reel-card-number">03</div>
           <div class="reel-card-content">
             <p class="reel-card-tag">Campaign &middot; 10 Films</p>
-            <h3 class="reel-card-name">TVS Ronin &mdash; Navaratri</h3>
+            <h3 class="reel-card-name">TVS Ronin Navaratri</h3>
           </div>
         </a>
 
-        <a href="https://www.youtube.com/channel/UCMi_U_5IvRSC8R4LsWVVKkA" target="_blank" rel="noopener" class="reel-card">
-          <div class="reel-card-thumb" style="background-color: var(--mid); background-image: linear-gradient(225deg, rgba(232,213,163,0.04), transparent);"></div>
+        <a href="https://www.youtube.com/watch?v=T3smT-b-XTM" target="_blank" rel="noopener" class="reel-card">
+          <div class="reel-card-thumb" style="background-image:url('https://img.youtube.com/vi/T3smT-b-XTM/maxresdefault.jpg')"></div>
           <div class="reel-card-gradient"></div>
           <div class="reel-card-play"></div>
           <div class="reel-card-number">04</div>
           <div class="reel-card-content">
             <p class="reel-card-tag">Brand Film</p>
-            <h3 class="reel-card-name">Epson &mdash; Color Confusion</h3>
+            <h3 class="reel-card-name">Epson Color Confusion</h3>
           </div>
         </a>
 
-        <a href="https://www.youtube.com/channel/UCMi_U_5IvRSC8R4LsWVVKkA" target="_blank" rel="noopener" class="reel-card">
-          <div class="reel-card-thumb" style="background-color: var(--mid); background-image: linear-gradient(45deg, rgba(232,213,163,0.04), transparent);"></div>
+        <a href="https://www.youtube.com/watch?v=fv0OEe_qC-g" target="_blank" rel="noopener" class="reel-card">
+          <div class="reel-card-thumb" style="background-image:url('https://img.youtube.com/vi/fv0OEe_qC-g/maxresdefault.jpg')"></div>
           <div class="reel-card-gradient"></div>
           <div class="reel-card-play"></div>
           <div class="reel-card-number">05</div>
           <div class="reel-card-content">
             <p class="reel-card-tag">Brand Film</p>
-            <h3 class="reel-card-name">Epson &mdash; Fake Nahi Original</h3>
+            <h3 class="reel-card-name">Epson Fake Nahi Original</h3>
           </div>
         </a>
 
-        <a href="https://www.youtube.com/channel/UCMi_U_5IvRSC8R4LsWVVKkA" target="_blank" rel="noopener" class="reel-card">
-          <div class="reel-card-thumb" style="background-color: var(--mid); background-image: linear-gradient(315deg, rgba(232,213,163,0.03), transparent);"></div>
+        <a href="https://www.youtube.com/watch?v=sOTGmU46RHw" target="_blank" rel="noopener" class="reel-card">
+          <div class="reel-card-thumb" style="background-image:url('https://img.youtube.com/vi/sOTGmU46RHw/maxresdefault.jpg')"></div>
           <div class="reel-card-gradient"></div>
           <div class="reel-card-play"></div>
           <div class="reel-card-number">06</div>
@@ -934,7 +994,7 @@
   <div class="banner-sticky" id="bannerSticky">
     <div class="banner-h-line"></div>
     <div class="banner-h-line"></div>
-    <div class="banner-text" id="bannerText">Story First &mdash; <span class="script">Always.</span></div>
+    <div class="banner-text" id="bannerText">Story First, <span class="script">Always.</span></div>
     <div class="banner-sub" id="bannerSub">
       <p>Every project starts with the story. Not the budget, not the deadline. The story comes first.</p>
     </div>
@@ -973,44 +1033,50 @@
     <div class="way-grid">
       <div class="way-card reveal">
         <div class="way-icon">
-          <svg viewBox="0 0 48 48"><path d="M24 4L6 14v20l18 10 18-10V14L24 4z"/><path d="M6 14l18 10 18-10"/><path d="M24 44V24"/></svg>
+          <!-- Open book / script -->
+          <svg viewBox="0 0 64 64"><path d="M8 12c8-4 16-2 24 3 8-5 16-7 24-3v38c-8-3-16-1-24 3-8-4-16-6-24-3V12z"/><path d="M32 15v38"/><path d="M14 20c4-1 8-1 12 1"/><path d="M14 26c4-1 8-1 12 1"/><path d="M14 32c4-1 8-1 12 1"/></svg>
         </div>
         <h3>Story First</h3>
         <p>Every project begins with the story. Everything else follows.</p>
       </div>
       <div class="way-card reveal reveal-d1">
         <div class="way-icon">
-          <svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="18"/><path d="M24 6v18l12 7"/></svg>
+          <!-- Diamond / gem -->
+          <svg viewBox="0 0 64 64"><path d="M12 24L32 52 52 24"/><path d="M8 24h48"/><path d="M12 24l8-12h24l8 12"/><path d="M20 12l4 12 8-12 8 12 4-12"/></svg>
         </div>
         <h3>Craft Over Clutter</h3>
         <p>One film that lands beats ten that scroll past.</p>
       </div>
       <div class="way-card reveal reveal-d2">
         <div class="way-icon">
-          <svg viewBox="0 0 48 48"><path d="M12 24a12 12 0 0124 0"/><path d="M36 24a12 12 0 01-24 0"/><circle cx="24" cy="24" r="4"/></svg>
+          <!-- Hands holding / collaboration -->
+          <svg viewBox="0 0 64 64"><path d="M8 36c0-8 6-14 14-14h4l6 6 6-6h4c8 0 14 6 14 14"/><circle cx="20" cy="18" r="5"/><circle cx="44" cy="18" r="5"/><path d="M28 28l4 8 4-8"/><path d="M24 42h16" opacity="0.5"/><path d="M20 48h24" opacity="0.3"/></svg>
         </div>
-        <h3>Collaborative</h3>
+        <h3>Collaborative Spirit</h3>
         <p>Good work comes from good people making things together.</p>
       </div>
       <div class="way-card reveal reveal-d1">
         <div class="way-icon">
-          <svg viewBox="0 0 48 48"><path d="M8 40l16-32 16 32"/><path d="M14 28h20"/></svg>
+          <!-- Lightning bolt + target -->
+          <svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="22" opacity="0.4"/><circle cx="32" cy="32" r="14" opacity="0.3"/><circle cx="32" cy="32" r="6"/><path d="M36 8l-6 20h12L30 56" stroke-width="1.5"/></svg>
         </div>
-        <h3>Instinct + Precision</h3>
+        <h3>Instinct Meets Precision</h3>
         <p>Creative instinct backed by sharp execution.</p>
       </div>
       <div class="way-card reveal reveal-d2">
         <div class="way-icon">
-          <svg viewBox="0 0 48 48"><path d="M6 24h36"/><path d="M24 6v36"/><path d="M12 12l24 24"/><path d="M36 12L12 36"/></svg>
+          <!-- Rocket -->
+          <svg viewBox="0 0 64 64"><path d="M32 8c-6 10-8 22-6 32h12c2-10 0-22-6-32z"/><path d="M26 40c-6 2-10 6-10 10l10-4"/><path d="M38 40c6 2 10 6 10 10l-10-4"/><circle cx="32" cy="26" r="4"/><path d="M29 40h6v8h-6z" fill="rgba(232,213,163,0.15)"/></svg>
         </div>
         <h3>Fast, Not Fragile</h3>
         <p>We move fast without cutting corners. Craft intact.</p>
       </div>
       <div class="way-card reveal reveal-d3">
         <div class="way-icon">
-          <svg viewBox="0 0 48 48"><path d="M24 8c-8 0-16 6-16 14s8 14 16 14"/><path d="M24 8c8 0 16 6 16 14s-8 14-16 14"/><circle cx="18" cy="20" r="2" fill="var(--accent)"/><circle cx="30" cy="20" r="2" fill="var(--accent)"/><path d="M18 28c2 3 8 3 12 0"/></svg>
+          <!-- Magic wand with sparkles -->
+          <svg viewBox="0 0 64 64"><path d="M10 54L42 22" stroke-width="1.5"/><path d="M42 22l8-8c2-2 6-2 8 0s2 6 0 8l-8 8"/><path d="M38 26l4-4"/><circle cx="20" cy="14" r="1.5" fill="var(--accent)"/><path d="M20 8v4M17 12h6" stroke-width="1"/><circle cx="48" cy="42" r="1.5" fill="var(--accent)"/><path d="M48 38v4M45 40h6" stroke-width="1"/><circle cx="14" cy="34" r="1" fill="var(--accent)"/><path d="M14 31v3M12 33h4" stroke-width="0.8"/></svg>
         </div>
-        <h3>Seriously Fun</h3>
+        <h3>A Little Magic</h3>
         <p>The best films come from teams that enjoy the making.</p>
       </div>
     </div>
@@ -1208,6 +1274,24 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   updateScrollBus();
   document.documentElement.style.scrollBehavior = 'smooth';
+
+  // === THUMBNAIL FALLBACK ===
+  // Test each thumbnail and add illustrative art if it fails to load
+  document.querySelectorAll('.reel-card-thumb').forEach(thumb => {
+    const bgUrl = thumb.style.backgroundImage.match(/url\(['"]?(.+?)['"]?\)/);
+    if (!bgUrl) return;
+    const img = new Image();
+    img.onerror = function() {
+      // Replace with art overlay
+      thumb.style.backgroundImage = 'none';
+      thumb.style.background = 'var(--dark)';
+      const art = document.createElement('div');
+      art.className = 'reel-card-art';
+      art.innerHTML = '<div class="reel-card-art-icon"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="45" opacity="0.5"/><path d="M40 45l30 15-30 15z" fill="rgba(232,213,163,0.08)"/><circle cx="60" cy="60" r="20"/><path d="M60 20v80" opacity="0.3"/><path d="M20 60h80" opacity="0.3"/></svg></div>';
+      thumb.parentElement.insertBefore(art, thumb);
+    };
+    img.src = bgUrl[1];
+  });
 })();
 </script>
 
